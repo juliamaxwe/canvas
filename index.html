@@ -1,0 +1,101 @@
+<!-- Julia Maxwell JS `Canvas Homework
+Worked on with Michael Payne and cited other resources when noted -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<!-- You can add your style here rather than in an external style sheet. -->
+<style>
+	canvas {
+	    border:5px solid #d3d3d3;
+	    background-color: #f1f1f1;
+	    display: block;
+	}
+</style>
+</head>
+<body>
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500"  ></canvas>
+    <input type = "color" id = "picker"/>
+
+		<script type="text/javascript"> /*starting the js here*/
+		var canvas = document.getElementById("myCanvas"); /*getting the canvas Element*/
+		var drawing = canvas.getContext('2d'); /*2d drawing and drawing object*/
+		var color = document.querySelector('#picker') /*color picker*/
+		var penWrite = true; /*variable for creating the pen*/
+
+
+		myCanvas.width = window.innerWidth * 0.8
+		myCanvas.height = window.innerHeight * 0.8 /*changing width and height to 80% of whatever the screen is*/
+
+
+		myCanvas.addEventListener('mousemove', function (move) {
+			/*on the movement of the mouse, do the following stuff:*/
+			console.log(move)
+			var hor = move.clientX; /*get x axis coordinate of the mouse*/
+			var ver = move.clientY; /*ditto for the y axis*/
+
+			if (penWrite) {
+				/*if the pen is writing*/
+				drawing.beginPath();
+				drawing.arc(hor,ver,10,hor,ver,2*Math.PI); /*create the pen as a circle using math! - w3schools helped with this*/
+				drawing.fillStyle = color;
+				drawing.strokeStyle = color;
+				drawing.fill(); /*the pen drawing color and fill are both the color you choose in the color picker*/
+			}
+		})
+
+		window.addEventListener("keydown", function (move){
+			/*when you press down a key, do the following stuff*/
+			console.log(move)
+
+			/*used keycode.info to get the keycodes for y, g, b, r, and space. the following is if the you press the corresponding keys, it'll go to the new color or clear the canvas*/
+
+			if (move.keyCode == 32) {
+				drawing.clearRect(1, 1, myCanvas.width, myCanvas.height);
+				console.log("clear canvas")
+
+			} /*used w3schools for clearRect function help - clear rectangle starting at coordinates (1,1) and clear the span of the width and height */
+
+			if (move.keyCode == 89){
+				color = 'yellow';
+			}
+			if (move.keyCode == 71){
+				color = 'green';
+			}
+			if (move.keyCode == 66){
+				color= 'blue';
+			}
+			if (move.keyCode == 82){
+				color="red";
+			}
+
+			/*next we're gonna put the pen up and down with the arrow keys. I used https://codepen.io/tomhodgins/pen/vXmJdw to help with this part.*/
+
+			if (move.keyCode == 38){
+				penWrite = false; /*if the keystroke for the up arrow is hit, the pen won't write*/
+			}
+			if (move.keyCode == 40){
+				penWrite = true; /*ditto but the reverse for the down arrow*/
+			}
+
+
+			/*determining color with colorpicker. used https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/change_event and https://stackoverflow.com/questions/39264722/onchange-event-is-not-working-in-color-type-input to figure this out*/
+
+			picker.addEventListener('change', function(move){
+				color = this.value;
+				/* when the picker is changed, the color is the value that was determined by the event listener*/
+			})
+		})
+
+
+
+
+
+
+		</script>
+</body>
+</html>
